@@ -1,8 +1,11 @@
 # Canadian Wildfires
 
 ## Goals
-Thousands of wildfires burn across Canada every year, burning up millions of hectares of forest, altering ecosystems, displacing people and destroying communities. Understanding patterns in these fires and building accurate models of potential future fires is crucial to allocating resources and coordinating prevention efforts.
-The goal of this project is to analyze historical data on Canadian wildfires and build a machine learning model able to predict the size of fires based on location and weather data.
+Thousands of wildfires burn across Canada every year, burning up millions of hectares of forest, altering ecosystems, displacing people and destroying communities. The smoke from fires affects our air quality, often impacting people living far from the fires themselves. The government spends hundreds of millions of dollars annually on fire prevention and suppression efforts. As the Canadian population grows, more people are living in areas that used to be wilderness, putting them closer to fires.
+
+<br>
+
+Understanding patterns in these fires and building accurate models to predict when, where and how big future fires will be is crucial to allocating resources and coordinating prevention efforts effectively. The goal of this project is to analyze historical data on Canadian wildfires and build a machine learning model able to predict the size of fires based on time, location, and weather data.
 
 <br>
 
@@ -25,7 +28,7 @@ Wildfire Data includes:
 
 The weather data was collected from Open-Meteo's [Historical Weather API](https://open-meteo.com/en/docs/historical-weather-api). See the full citation at the bottom of this Readme. For each fire, I pulled the prior 2 weeks of daily weather data including
 - Average Temperature
-- Maximum Temperature
+- High Temperature
 - Total Precipitation
 - Maximum Windspeed
 - Dominant Wind Direction
@@ -101,7 +104,7 @@ Below are heat density maps showing the distribution of high temperature and win
 XGBoost performed best for both classification and regession models.
 
 | Model | RMSE | R<sup>2</sup> |
---------------------------------
+|-------|------|---------------|
 | Small Fire Regressor | 1.970 | .102 | 
 |Medium Fire Regressor | 888.0 | .087 |
 |Large Fire Regressor  | 4,9176 | .012 |
