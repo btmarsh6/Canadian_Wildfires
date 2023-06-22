@@ -35,12 +35,12 @@ The weather data was collected from Open-Meteo's [Historical Weather API](https:
 ## Process
 1. Data Retrieval and Cleaning
     - From the wildfire data, rows were dropped if they were missing either location coordinates or a date. I mapped all points, then dropped those located outside of Canada. Some longitude coordinates needed to be flipped to negative (probably entered as E/W instead of +/-).
-    - Weather data was collected through a series of API requests and saved to a MongoDB database. This had to be done in multiple batches over the week due to request limits and processes timing out. After the series of requests, it was necessary to check for duplicates in the database due to batches overlapping.
+    - Weather data was collected through a series of API requests and saved to a MongoDB database. This had to be done in multiple batches over the week due to request limits and processes timing out. The weather_data_API_pulls notebook shows just one sample batch of API requests, but the rest were deleted for readability. After the series of requests, it was necessary to check for duplicates in the database due to batches overlapping.
 2. EDA
     - EDA was a main focus of this project. I was interested in looking for patterns and trends in the wildfire data itself and how it related to the weather data. I produced a variety of charts and maps that can be seen in the two EDA notebooks. I created a Tableau Dashboard to provide an interacive platform to explore the data (linked below).
 
 3. Modeling
-Modeling with this data proved to be challenging. I decided to attempt a model that would predict the size of a fire. The feature set I used included:
+I attempt a model that would predict the size of a fire. The feature set I used included:
     - Latitude
     - Longitude
     - Year
@@ -57,9 +57,10 @@ Modeling with this data proved to be challenging. I decided to attempt a model t
 
 My initial modeling attempts used the average wind speed and direction from the preceding 2 weeks, but I found when I switched to just day-of wind conditions, I was able to reduce my RMSE by half.
 
-After attempting multiple different algorithms and tweaking the feature set, I was only able to get an R<sup>2</sup> value of .014. The next approach I attempted was to then split my modeling into two phases:
+After attempting multiple different algorithms and tweaking the feature set, I was only able to get an R<sup>2</sup> value of .014. I decided to change my approach and split my modeling into two phases:
 Phase 1 - Classification. First, I would predict if a fire would be small (0-15 hectares), medium (15-5,000 hectares) or large (5,000-1,050,000 hectares).
-Phase 2 - Regression. Next, I trained three separate regression models to predict fire size for each one of the small, medium and large categories. This did result in some improvements, but the models are still far from useful.
+Phase 2 - Regression. Next, I trained three separate regression models to predict fire size for each one of the small, medium and large categories.
+I tried out several different algorithms, but XGBoost seemed to perform best for both the classification and regression.
 
 <br>
 
@@ -97,11 +98,13 @@ Below are heat density maps showing the distribution of high temperature and win
 <br>
 
 ### Predictive Models
-My best classifier model was an Random Forest Classifier.
+XGBoost performed best for both classification and regession models.
 
-Small Fire Regressor:
-Medium Fire Regressor:
-Large Fire Regressor
+| Model | RMSE | R<sup>2</sup> |
+--------------------------------
+| Small Fire Regressor | 1.970 | .102 | 
+|Medium Fire Regressor | 888.0 | .087 |
+|Large Fire Regressor  | 4,9176 | .012 |
 
 <br>
 
@@ -113,7 +116,7 @@ Another challenge I faced was with collecting the weather data. It took a long t
 <br>
 
 ## Future Work
-The feature set I built my models off of did not show any sort of strong correlation with fire size. To make these models more accurate, further research needs to be done and additional data collected that may bring in other relevant factors. The protection zones likely relate to how firefighters respond in putting out fires, but I was unable to associate the variety of different zones the different source agencies use. Other potential factors that could be explored in the future relate to fire prevention budgets and activities, and distances from fires to nearest population center or airport. Perhaps the size of a fire is more dependent on the human actions leading up to and following the fire than the weather conditions at the time of the fire.
+The feature set I built my models off of did not show any sort of strong correlation with fire size. To make these models more accurate, further research needs to be done and additional data collected that may bring in other relevant factors. The protection zones likely relate to how firefighters respond in putting out fires, but I was unable to associate the variety of different zones the different source agencies use. Other data to incorporate in future exploration would be things like fire prevention activities, provincial and federal budget allocations, and distances from fires to nearest population center or airport. Perhaps the size of a fire is more dependent on the human actions leading up to and following the fire than the weather conditions at the time of the fire. I could also expand the window for weather data, perhaps stretching it to look at the preceding month or season.
 
 <br>
 
